@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.googleplay.stampic.presentation.ui.sign.viewmodel.SignUpUseAgreementViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="16dp">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_agreement_title"
+            style="@style/TextView.Title.20.Sb.160"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="37dp"
+            android:layout_marginLeft="20dp"
+            android:text="@string/sign_up_use_agreement_title"
+            android:textSize="36dp"
+            android:lineHeight="40dp"
+            android:textColor="@color/main_color"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/iv_back" />
+        <TextView
+            android:id="@+id/tv_agreement_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="서비스 이용에 꼭 필요한 사항입니다."
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/sub_color"
+            app:layout_constraintTop_toBottomOf="@id/tv_agreement_title"
+            />
+        <TextView
+            style="@style/TextView.Body.16.M"
+            _toEndOf="@id/cb_all_agree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_up_use_agreement_all_agree"
+            android:textColor="@color/main_color"
+            android:layout_marginStart="20dp"
+            app:layout_constraintBottom_toBottomOf="@id/cb_all_agree"
+            app:layout_constraintEnd_toStartOf=""
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/cb_all_agree" />
+
+        <CheckBox
+            android:id="@+id/cb_all_agree"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="120dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/selector_checkbox"
+            android:button="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="tv_agreement_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_agreement_title" />
+
+        <LinearLayout
+            android:id="@+id/layout_age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/cb_all_agree">
+
+            <TextView
+                android:id="@+id/tv_service_agreement"
+                style="@style/TextView.Body.14.R"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="@string/sign_up_use_agreement_conetent"
+                android:textColor="@color/sub_color" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <CheckBox
+                android:id="@+id/cb_age"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/selector_checkbox"
+                android:button="@null"
+                android:onClick="@{(v) -> vm.onClickCheckBox(v)}" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_use_agreement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/layout_age">
+
+            <TextView
+                android:id="@+id/tv_policy"
+                style="@style/TextView.Body.14.R"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="@string/sign_up_use_agreement_private_information_content"
+                android:textColor="@color/sub_color" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <CheckBox
+                android:id="@+id/cb_use_agreement"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/selector_checkbox"
+                android:button="@null"
+                android:onClick="@{(v) -> vm.onClickCheckBox(v)}" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_private_information"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/layout_use_agreement">
+
+            <TextView
+                android:id="@+id/tv_position_terms"
+                style="@style/TextView.Body.14.R"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="@string/sign_up_use_agreement_position_terms"
+                android:textColor="@color/sub_color" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <CheckBox
+                android:id="@+id/cb_private_information"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/selector_checkbox"
+                android:button="@null"
+                android:onClick="@{(v) -> vm.onClickCheckBox(v)}" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/push_alarm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/layout_private_information">
+
+            <TextView
+                style="@style/TextView.Body.14.R"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="@string/sign_up_use_agreement_push_alarm"
+                android:textColor="@color/sub_color" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <CheckBox
+                android:id="@+id/cb_push_alarm"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/selector_checkbox"
+                android:button="@null"
+                android:onClick="@{(v) -> vm.onClickCheckBox(v)}" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_next"
+            style="@style/MaterialButton.8.16.M"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/selector_btn"
+            android:paddingVertical="16dp"
+            android:enabled="@{vm.isEnabled()}"
+            android:text="@string/sign_up_use_agreement_next"
+            android:textColor="@color/white"
+            app:backgroundTint="@null"
+            app:cornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
