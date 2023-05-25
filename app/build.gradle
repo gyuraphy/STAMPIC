@@ -3,7 +3,11 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 android {
     namespace 'com.googleplay.stampic'
@@ -16,6 +20,8 @@ android {
         versionCode 1
         versionName "1.0"
 
+        buildConfigField "String", "BASE_URL", properties['base_url']
+        buildConfigField "String", "GOOGLE_API_KEY", properties['MAPS_API_KEY']
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -34,6 +40,9 @@ android {
     }
     buildFeatures {
         dataBinding true
+    }
+    buildFeatures {
+        buildConfig = true
     }
 }
 
@@ -92,6 +101,10 @@ dependencies {
     // KaKao Map
     implementation files('libs/libDaumMapAndroid.jar')
 
-    // Loading Dialog
+    // Google Map
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+
+// Loading Dialog
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 }

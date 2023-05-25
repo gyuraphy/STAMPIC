@@ -1,4 +1,4 @@
-package com.dnd_8th_4_android.wery.domain.model
+package com.googleplay.stampic.domain.model
 
 import android.graphics.drawable.Drawable
 

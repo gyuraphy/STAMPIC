@@ -56,10 +56,22 @@
         android:label="SignUpPasswordFragment"
         tools:layout="@layout/fragment_sign_up_password">
         <action
-            android:id="@+id/action_signUpPasswordFragment_to_signUpNicknameFragment"
+            android:id="@+id/action_signUpPasswordFragment_to_signUpBirthFragment"
             app:destination="@id/signUpNicknameFragment" />
         <action
             android:id="@+id/action_signUpPasswordFragment_to_signUpEmailFragment"
+            app:destination="@id/signUpEmailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpBirthFragment"
+        android:name="com.googleplay.stampic.presentation.ui.sign.view.SignUpBirthFragment"
+        android:label="SignUpBirthFragment"
+        tools:layout="@layout/fragment_sign_up_birth">
+        <action
+            android:id="@+id/action_signUpBirthFragment_to_signUpNicknameFragment"
+            app:destination="@id/signUpNicknameFragment" />
+        <action
+            android:id="@+id/action_signUpBirthFragment_to_signUpPasswordFragment"
             app:destination="@id/signUpEmailFragment" />
     </fragment>
       <fragment

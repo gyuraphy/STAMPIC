@@ -1,33 +1,55 @@
 package com.googleplay.stampic.presentation.ui.sign.view
 
-import androidx.lifecycle.ViewModelProvider
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.googleplay.stampic.R
+import com.googleplay.stampic.databinding.FragmentSignUpBirthBinding
+import com.googleplay.stampic.presentation.ui.base.BaseFragment
 import com.googleplay.stampic.presentation.ui.sign.viewmodel.SignUpBirthViewModel
+import com.googleplay.stampic.presentation.ui.sign.viewmodel.SignViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import java.util.regex.Pattern
 
-class SignUpBirthFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = SignUpBirthFragment()
+@AndroidEntryPoint
+class SignUpBirthFragment :
+    BaseFragment<FragmentSignUpBirthBinding>(R.layout.fragment_sign_up_birth) {
+    private val signUpBirthViewModel: SignUpBirthViewModel by viewModels()
+    private val signViewModel: SignViewModel by activityViewModels()
+    override fun initStartView() {
+        binding.vm = signUpBirthViewModel
     }
+    override fun initDataBinding() {
 
-    private lateinit var viewModel: SignUpBirthViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_sign_up_birth, container, false)
     }
+    override fun initAfterBinding() {
+        binding.ivBack.setOnClickListener {
+            findNavController().navigate(R.id.action_signUpBirthFragment_to_signUpPasswordFragment)
+        }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SignUpBirthViewModel::class.java)
-        // TODO: Use the ViewModel
+        binding.btnNext.setOnClickListener {
+            if (signUpBirthViewModel.textCount.value == 8) {
+                val edtPassword = binding.etBirth.text.toString()
+                val pattern = Pattern.compile("^(19|20)\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])\$")
+                val isSuccess = pattern.matcher(edtPassword).find()
+                if (isSuccess) {
+                    signViewModel.signUpPassword.value =
+                        signUpBirthViewModel.signUpBirth.value
+                    goToSignUpNickname()
+                } else {
+                    binding.tvBirthError.isVisible = true
+                    binding.tvBirthError.text =
+                        requireContext().resources.getString(R.string.sign_up_birth_error)
+                }
+            } else {
+                binding.tvBirthError.isVisible = true
+                binding.tvBirthError.text =
+                    requireContext().resources.getString(R.string.sign_up_birth_length_error)
+            }
+        }
     }
-
+    private fun goToSignUpNickname() {
+        findNavController().navigate(R.id.action_signUpBirthFragment_to_signUpNicknameFragment)
+    }
 }

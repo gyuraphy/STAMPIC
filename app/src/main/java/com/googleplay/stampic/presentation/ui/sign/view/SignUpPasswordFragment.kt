@@ -89,6 +89,6 @@ class SignUpPasswordFragment :
     }
 
     private fun goToSignUpNickname() {
-        findNavController().navigate(R.id.action_signUpPasswordFragment_to_signUpNicknameFragment)
+        findNavController().navigate(R.id.action_signUpPasswordFragment_to_signUpBirthFragment)
     }
 }
