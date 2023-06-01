@@ -1,13 +1,104 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".presentation.ui.sign.view.SignUpGenderFragment">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
+    <data>
+        <variable
+            name="vm"
+            type="com.googleplay.stampic.presentation.ui.sign.viewmodel.SignUpGenderViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello" />
+        android:paddingHorizontal="16dp">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_gender"
+            style="@style/TextView.Title.20.Sb.160"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="37dp"
+            android:text="@string/sign_up_gender_title"
+            android:textColor="@color/sub_color"
+            app:layout_constraintTop_toBottomOf="@id/iv_back" />
+
+        <LinearLayout
+            android:id="@+id/bt_gender_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="186dp"
+            app:layout_constraintBottom_toTopOf="@+id/btn_next"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_gender">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_male"
+                style="@style/OutlinedButton"
+                android:layout_width="150dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="166dp"
+                android:layout_marginEnd="8dp"
+                android:background="@{vm.selectedGender == `남자` ? @drawable/bt_stroke_selected : @drawable/bt_stroke}"
+                android:onClick="@{() -> vm.onGenderSelected(true)}"
+                android:text="@string/sign_up_gender_male"
+                android:textColor="@color/main_color"
+                app:layout_constraintEnd_toStartOf="@id/btn_female"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_gender" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_female"
+                style="@style/OutlinedButton"
+                android:layout_width="150dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="166dp"
+                android:background="@{vm.selectedGender == `여자` ? @drawable/bt_stroke_selected : @drawable/bt_stroke}"
+                android:onClick="@{() -> vm.onGenderSelected(false)}"
+                android:text="@string/sign_up_gender_female"
+                android:textColor="@color/sub_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_male"
+                app:layout_constraintTop_toBottomOf="@id/tv_gender" />
+        </LinearLayout>
+        <!-- 기존 뷰들 -->
+
+        <TextView
+            android:id="@+id/tv_gender_error"
+            style="@style/TextView.Caption.12.R"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/sign_up_gender_error"
+            android:textColor="@color/color_eb0555"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/bt_gender_group"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_next"
+            style="@style/MaterialButton.8.16.M"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/selector_btn"
+            android:enabled="@{vm.isEnabled}"
+            android:paddingVertical="16dp"
+            android:text="@string/sign_up_use_agreement_next"
+            android:textColor="@color/white"
+            app:backgroundTint="@null"
+            app:cornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

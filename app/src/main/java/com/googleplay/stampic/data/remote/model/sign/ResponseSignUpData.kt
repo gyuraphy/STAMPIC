@@ -10,7 +10,9 @@ data class ResponseSignUpData(
         val email: String,
         val name: String,
         val nickName: String,
-        val phoneNumber: String,
+        val birth: String,
+        val gender: String,
+        val province: String,
         val atk: String,
     )
 }

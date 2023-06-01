@@ -2,26 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/homeFragment"
-        android:icon="@drawable/selector_main"
-        android:title="@string/bottom_navigation_main" />
+        android:icon="@drawable/home"
+        android:title="홈" />
 
     <item
-        android:id="@+id/groupFragment"
-        android:icon="@drawable/selector_group"
-        android:title="@string/bottom_navigation_group" />
+        android:icon="@drawable/bus"
+        android:title="부산 여행" />
 
     <item
         android:id="@+id/mapFragment"
-        android:icon="@drawable/selector_map"
-        android:title="@string/bottom_navigation_map" />
+        android:icon="@drawable/stamp_menu"
+        android:title="스탬프" />
 
     <item
-        android:id="@+id/missionFragment"
-        android:icon="@drawable/selector_mission"
-        android:title="@string/bottom_navigation_mission" />
+        android:icon="@drawable/day"
+        android:title="축제 일정" />
 
     <item
         android:id="@+id/myPageFragment"
-        android:icon="@drawable/selector_mypage"
-        android:title="@string/bottom_navigation_mypage" />
+        android:icon="@drawable/mypage"
+        android:title="마이페이지" />
 </menu>

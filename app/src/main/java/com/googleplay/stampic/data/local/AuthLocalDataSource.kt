@@ -1,6 +1,7 @@
 package com.googleplay.stampic.data.local
 
 import android.content.Context
+import com.googleplay.stampic.data.local.PostLocalDataSource.Companion.WERY_APP
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -8,7 +9,7 @@ class AuthLocalDataSource @Inject constructor(
     @ApplicationContext context: Context
 ) {
     private val sharedPreferences =
-        context.getSharedPreferences(WERY_APP, Context.MODE_PRIVATE)
+        context.getSharedPreferences(STAMPIC_APP, Context.MODE_PRIVATE)
 
     var accessToken: String?
         set(value) = sharedPreferences.edit().putString(ACCESS_TOKEN, value).apply()
@@ -27,7 +28,7 @@ class AuthLocalDataSource @Inject constructor(
         get() = sharedPreferences.getInt(USER_ID, 0)
 
     companion object {
-        const val WERY_APP = "WERY_APP"
+        const val STAMPIC_APP = "STAMPIC_APP"
         const val ACCESS_TOKEN = "accessToken"
         const val IS_AUTO_LOGIN = "isAutoLogin"
         const val HAS_ONBOARD_DONE = "hasOnboardDone"

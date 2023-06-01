@@ -37,7 +37,7 @@ class SignUpEmailFragment :
 
     override fun initAfterBinding() {
         binding.ivBack.setOnClickListener {
-            findNavController().navigate(R.id.action_signUpEmailFragment_to_signUpNameFragment)
+            findNavController().navigate(R.id.action_signUpEmailFragment_to_signUpProvinceFragment)
         }
 
         binding.btnNext.setOnClickListener {

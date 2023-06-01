@@ -1,5 +1,6 @@
 package com.googleplay.stampic.presentation.ui.sign.view
 
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
@@ -57,17 +58,21 @@ class SignUpNicknameFragment :
         binding.etNickname.hint = hintList.shuffled().take(1).joinToString()
 
         binding.ivBack.setOnClickListener {
-            findNavController().navigate(R.id.action_signUpNicknameFragment_to_signUpPasswordFragment)
+            findNavController().navigate(R.id.action_signUpNicknameFragment_to_signUpGenderFragment)
         }
 
         binding.btnNext.setOnClickListener {
+            Log.d("lsy", "넘기려는 데이터 중 province는 담겼을까?"+signViewModel.signUpProvince.value.toString())
             signUpNicknameViewModel.signUp(
                 RequestSignUpData(
-                name = signViewModel.signUpName.value.toString(),
-                email = signViewModel.signUpEmail.value.toString(),
-                password = signViewModel.signUpPassword.value.toString(),
-                nickName = signUpNicknameViewModel.signUpNickname.value.toString()
-            )
+                    name = signViewModel.signUpName.value.toString(),
+                    email = signViewModel.signUpEmail.value.toString(),
+                    password = signViewModel.signUpPassword.value.toString(),
+                    nickName = signUpNicknameViewModel.signUpNickname.value.toString(),
+                    birth = signViewModel.signUpBirth.value.toString(),
+                    gender = signViewModel.signUpGender.value.toString(),
+                    province = signViewModel.signUpProvince.value.toString(),
+                )
             )
         }
     }

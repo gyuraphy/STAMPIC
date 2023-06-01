@@ -20,7 +20,10 @@
             app:defaultNavHost="true"
             app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
             app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintVertical_bias="0.0"
+            app:navGraph="@navigation/main_navigation"
+            tools:layout_editor_absoluteX="0dp" />
+
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigation"
@@ -28,8 +31,9 @@
             android:layout_height="wrap_content"
             app:itemBackground="@color/white"
             app:itemIconTint="@color/selector_bottom_navigation_icon"
-            app:labelVisibilityMode="unlabeled"
+            app:labelVisibilityMode="labeled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:menu="@menu/bottom_navigation_menu" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

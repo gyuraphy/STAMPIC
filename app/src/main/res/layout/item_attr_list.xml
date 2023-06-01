@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="20dp">
+
+        <LinearLayout
+            android:id="@+id/layout_attr_image"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:foreground="@drawable/shape_radius_16_gray200"
+            android:gravity="center"
+            android:padding="1dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_attr_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_radius_16_gray200"
+                android:scaleType="fitXY"
+                android:src="@drawable/img_no_group" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_attr_name"
+            style="@style/TextView.Title.14.Sb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toTopOf="@id/tv_attr_introduce"
+            app:layout_constraintStart_toEndOf="@id/layout_attr_image"
+            app:layout_constraintTop_toTopOf="@id/layout_attr_image"
+            tools:text="명소 이름1" />
+
+        <TextView
+            android:id="@+id/tv_attr_introduce"
+            style="@style/TextView.Caption.12.R"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:ems="13"
+            android:maxLines="3"
+            android:textColor="@color/gray700"
+            app:layout_constraintBottom_toBottomOf="@id/layout_attr_image"
+            app:layout_constraintStart_toEndOf="@id/layout_attr_image"
+            app:layout_constraintTop_toBottomOf="@id/tv_attr_name"
+            tools:text="명소 소개글은 소개글은 소개글은 소개글은 소개글은명소 소개글은 소개글은 소개글은 소개글은 소개글은 명소 소개글은 소개글은 소개글은 소개글은 소개글은 명소 소개글은 소개글은 소개글은 소개글은 소개글은" />
+
+
+        <androidx.constraintlayout.helper.widget.Layer
+            android:id="@+id/layer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="layout_attr_image, tv_attr_name, tv_attr_introduce"
+            tools:ignore="MissingConstraints" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

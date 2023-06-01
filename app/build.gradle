@@ -99,12 +99,12 @@ dependencies {
     implementation 'com.github.pedromassango:doubleClick:3.0'
 
     // KaKao Map
-    implementation files('libs/libDaumMapAndroid.jar')
+//    implementation files('libs/libDaumMapAndroid.jar')
 
     // Google Map
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
 
-// Loading Dialog
+    // Loading Dialog
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 }

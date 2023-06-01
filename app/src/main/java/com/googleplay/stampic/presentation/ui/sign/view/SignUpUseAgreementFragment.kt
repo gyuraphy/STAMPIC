@@ -73,7 +73,7 @@ class SignUpUseAgreementFragment :
     }
 
     private fun gotoSingUpName() {
-        findNavController().navigate(R.id.action_signUpUseAgreementFragment_to_signUpNameFragment)
+        findNavController().navigate(R.id.action_signUpUseAgreementFragment_to_signUpProvinceFragment)
     }
 
     private fun selectAll() {

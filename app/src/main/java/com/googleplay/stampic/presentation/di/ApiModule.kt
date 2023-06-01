@@ -31,11 +31,11 @@ object ApiModule {
         return retrofit.create(SignUpService::class.java)
     }
 
-//    @Provides
-//    @Singleton
-//    fun provideHomeService(retrofit: Retrofit): HomeService {
-//        return retrofit.create(HomeService::class.java)
-//    }
+    @Provides
+    @Singleton
+    fun provideHomeService(retrofit: Retrofit): HomeService {
+        return retrofit.create(HomeService::class.java)
+    }
 //
 //    @Provides
 //    @Singleton

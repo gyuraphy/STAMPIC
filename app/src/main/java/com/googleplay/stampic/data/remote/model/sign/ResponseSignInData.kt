@@ -11,6 +11,8 @@ data class ResponseSignInData(
         val name: String,
         val nickName: String,
         val phoneNumber: String,
+        val birth: String,
+        val gender: String,
         val atk: String
     )
 }

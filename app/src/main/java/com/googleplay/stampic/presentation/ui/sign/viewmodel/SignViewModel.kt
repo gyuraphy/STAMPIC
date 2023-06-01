@@ -10,4 +10,7 @@ class SignViewModel @Inject constructor() : ViewModel() {
     val signUpName = MutableLiveData<String>()
     val signUpEmail = MutableLiveData<String>()
     val signUpPassword = MutableLiveData<String>()
+    val signUpBirth = MutableLiveData<String>()
+    val signUpGender = MutableLiveData<String>()
+    val signUpProvince = MutableLiveData<String>()
 }

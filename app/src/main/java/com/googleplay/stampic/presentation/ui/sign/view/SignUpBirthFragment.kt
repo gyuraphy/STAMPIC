@@ -1,5 +1,6 @@
 package com.googleplay.stampic.presentation.ui.sign.view
 
+import android.util.Log
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -29,17 +30,18 @@ class SignUpBirthFragment :
         }
 
         binding.btnNext.setOnClickListener {
+            Log.d("lsy", "버스다음클릭!")
             if (signUpBirthViewModel.textCount.value == 8) {
-                val edtPassword = binding.etBirth.text.toString()
+                val edtBirth = binding.etBirth.text.toString()
                 val pattern = Pattern.compile("^(19|20)\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])\$")
-                val isSuccess = pattern.matcher(edtPassword).find()
+                val isSuccess = pattern.matcher(edtBirth).find()
                 if (isSuccess) {
-                    signViewModel.signUpPassword.value =
+                    signViewModel.signUpBirth.value =
                         signUpBirthViewModel.signUpBirth.value
                     goToSignUpNickname()
                 } else {
-                    binding.tvBirthError.isVisible = true
-                    binding.tvBirthError.text =
+                        binding.tvBirthError.isVisible = true
+                        binding.tvBirthError.text =
                         requireContext().resources.getString(R.string.sign_up_birth_error)
                 }
             } else {
@@ -50,6 +52,6 @@ class SignUpBirthFragment :
         }
     }
     private fun goToSignUpNickname() {
-        findNavController().navigate(R.id.action_signUpBirthFragment_to_signUpNicknameFragment)
+        findNavController().navigate(R.id.action_signUpBirthFragment_to_signUpGenderFragment)
     }
 }

@@ -5,4 +5,7 @@ data class RequestSignUpData(
     val email: String,
     val password: String,
     val nickName: String,
+    val birth: String,
+    val gender: String,
+    val province: String,
 )

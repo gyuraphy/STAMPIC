@@ -24,6 +24,7 @@ class SignUpBirthViewModel @Inject constructor() : ViewModel() {
         }
 
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            _textCount.value = p0?.length
             _isEnabled.value = p0?.length!! > 0
         }
 
@@ -31,4 +32,5 @@ class SignUpBirthViewModel @Inject constructor() : ViewModel() {
 
         }
     }
+
 }

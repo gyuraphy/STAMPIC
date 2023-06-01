@@ -20,11 +20,23 @@
         android:label="SignUpUseAgreementFragment"
         tools:layout="@layout/fragment_sign_up_use_agreement">
         <action
-            android:id="@+id/action_signUpUseAgreementFragment_to_signUpNameFragment"
-            app:destination="@id/signUpNameFragment" />
+            android:id="@+id/action_signUpUseAgreementFragment_to_signUpProvinceFragment"
+            app:destination="@id/signUpProvinceFragment" />
         <action
             android:id="@+id/action_signUpUseAgreementFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpProvinceFragment"
+        android:name="com.googleplay.stampic.presentation.ui.sign.view.SignUpProvinceFragment"
+        android:label="SignUpProvinceFragment"
+        tools:layout="@layout/fragment_sign_up_name">
+        <action
+            android:id="@+id/action_signUpProvinceFragment_to_signUpEmailFragment"
+            app:destination="@id/signUpEmailFragment" />
+        <action
+            android:id="@+id/action_signUpProvinceFragment_to_signUpUseAgreementFragment"
+            app:destination="@id/signUpUseAgreementFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpNameFragment"
@@ -47,7 +59,7 @@
             android:id="@+id/action_signUpEmailFragment_to_signUpPasswordFragment"
             app:destination="@id/signUpPasswordFragment" />
         <action
-            android:id="@+id/action_signUpEmailFragment_to_signUpNameFragment"
+            android:id="@+id/action_signUpEmailFragment_to_signUpProvinceFragment"
             app:destination="@id/signUpNameFragment" />
     </fragment>
     <fragment
@@ -57,7 +69,7 @@
         tools:layout="@layout/fragment_sign_up_password">
         <action
             android:id="@+id/action_signUpPasswordFragment_to_signUpBirthFragment"
-            app:destination="@id/signUpNicknameFragment" />
+            app:destination="@id/signUpBirthFragment" />
         <action
             android:id="@+id/action_signUpPasswordFragment_to_signUpEmailFragment"
             app:destination="@id/signUpEmailFragment" />
@@ -68,11 +80,23 @@
         android:label="SignUpBirthFragment"
         tools:layout="@layout/fragment_sign_up_birth">
         <action
-            android:id="@+id/action_signUpBirthFragment_to_signUpNicknameFragment"
-            app:destination="@id/signUpNicknameFragment" />
+            android:id="@+id/action_signUpBirthFragment_to_signUpGenderFragment"
+            app:destination="@id/signUpGenderFragment" />
         <action
             android:id="@+id/action_signUpBirthFragment_to_signUpPasswordFragment"
-            app:destination="@id/signUpEmailFragment" />
+            app:destination="@id/signUpPasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpGenderFragment"
+        android:name="com.googleplay.stampic.presentation.ui.sign.view.SignUpGenderFragment"
+        android:label="SignUpGenderFragment"
+        tools:layout="@layout/fragment_sign_up_gender">
+        <action
+            android:id="@+id/action_signUpGenderFragment_to_signUpNicknameFragment"
+            app:destination="@id/signUpNicknameFragment" />
+        <action
+            android:id="@+id/action_signUpGenderFragment_to_signUpBirthFragment"
+            app:destination="@id/signUpBirthFragment" />
     </fragment>
       <fragment
         android:id="@+id/signUpNicknameFragment"
@@ -83,8 +107,8 @@
             android:id="@+id/action_signUpNicknameFragment_to_signUpWelcomeFragment"
             app:destination="@id/signUpWelcomeFragment" />
         <action
-            android:id="@+id/action_signUpNicknameFragment_to_signUpPasswordFragment"
-            app:destination="@id/signUpPasswordFragment" />
+            android:id="@+id/action_signUpNicknameFragment_to_signUpGenderFragment"
+            app:destination="@id/signUpGenderFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpWelcomeFragment"

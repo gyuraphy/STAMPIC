@@ -31,6 +31,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         setupBottomNavMenu(navController)
     }
 
+    // 하단 메뉴
     private fun setupBottomNavMenu(navController: NavController) {
         val bottomNav = binding.bottomNavigation
         bottomNav.setupWithNavController(navController)

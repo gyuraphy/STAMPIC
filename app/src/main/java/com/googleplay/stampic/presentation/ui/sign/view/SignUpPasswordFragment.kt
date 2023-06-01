@@ -1,6 +1,7 @@
 package com.googleplay.stampic.presentation.ui.sign.view
 
 import android.text.InputType
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
@@ -56,6 +57,7 @@ class SignUpPasswordFragment :
         }
 
         binding.btnNext.setOnClickListener {
+            Log.d("lsy", "패스워드다음클릭!")
             if (signUpPasswordViewModel.textCount.value in 8..12) {
                 val edtPassword = binding.etPassword.text.toString()
                 val pattern = Pattern.compile("^[a-zA-Z\\d!@#$%^&+=]*$")
@@ -63,7 +65,7 @@ class SignUpPasswordFragment :
                 if (isSuccess) {
                     signViewModel.signUpPassword.value =
                         signUpPasswordViewModel.signUpPassword.value
-                    goToSignUpNickname()
+                    goToSignUpBirth()
                 } else {
                     binding.tvPasswordError.isVisible = true
                     binding.tvPasswordError.text =
@@ -88,7 +90,7 @@ class SignUpPasswordFragment :
         binding.etPassword.setSelection(binding.etPassword.length())
     }
 
-    private fun goToSignUpNickname() {
+    private fun goToSignUpBirth() {
         findNavController().navigate(R.id.action_signUpPasswordFragment_to_signUpBirthFragment)
     }
 }

@@ -33,11 +33,11 @@ object RepositoryModule {
         return SignUpRepositoryImpl(signUpDataSource)
     }
 
-//    @Provides
-//    @Singleton
-//    fun provideHomeRepository(homeDataSource: HomeDataSource): HomeRepository {
-//        return HomeRepositoryImpl(homeDataSource)
-//    }
+    @Provides
+    @Singleton
+    fun provideHomeRepository(homeDataSource: HomeDataSource): HomeRepository {
+        return HomeRepositoryImpl(homeDataSource)
+    }
 
 //    @Provides
 //    @Singleton

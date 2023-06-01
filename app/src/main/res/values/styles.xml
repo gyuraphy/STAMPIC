@@ -287,6 +287,19 @@
         <item name="fontFamily">@font/pretendard_regular</item>
     </style>
 
+    <style name="OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <!-- 버튼의 기본 스타일 설정 -->
+        <item name="android:background">@null</item>
+        <item name="android:textColor">@color/main_color</item>
+
+        <!-- 선택된 버튼에 대한 스타일 설정 -->
+        <item name="android:state_selected">true</item>
+        <item name="android:state_focused">true</item>
+        <item name="android:state_pressed">true</item>
+        <item name="strokeColor">@color/main_color</item>
+        <item name="strokeWidth">2dp</item>
+    </style>
+
     <!--  BottomDialog  -->
     <style name="BottomDialog">
         <item name="android:windowFrame">@null</item>

@@ -34,11 +34,11 @@ object DataSourceModule {
         return SignUpDataSourceImpl(signUpService)
     }
 
-//    @Provides
-//    @Singleton
-//    fun provideHomeDataSource(homeService: HomeService): HomeDataSource {
-//        return HomeDataSourceImpl(homeService)
-//    }
+    @Provides
+    @Singleton
+    fun provideHomeDataSource(homeService: HomeService): HomeDataSource {
+        return HomeDataSourceImpl(homeService)
+    }
 
 //    @Provides
 //    @Singleton

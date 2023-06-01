@@ -46,17 +46,17 @@
     <string name="sign_up_welcome_start">시작하기</string>
     <string name="sign_up_welcome_top_title">반가워요 </string>
     <string name="sign_up_welcome_bottom_title">회원 가입이 완료되었어요!</string>
-    <string name="sign_up_welcome_content">위어리에서 친구들과 함께\n생각을 기록하고 일상을 공유하러 떠나볼까요? </string>
+    <string name="sign_up_welcome_content">스탬픽에서 부산을\n여행하고 도장을 찍으러 떠나볼까요? </string>
 
     <!-- FragmentSignUpName -->
     <string name="sign_up_name_title">이름을 입력해주세요</string>
-    <string name="sign_up_name_hint">김워어리</string>
+    <string name="sign_up_name_hint">김스탬픽</string>
     <string name="sign_up_name_error">올바른 이름을 입력해 주세요.</string>
 
     <!-- FragmentSignUpEmail -->
     <string name="sign_up_email_title">이메일을 입력해주세요</string>
     <string name="sign_up_email_content">로그인 또는 회원가입을 위해 사용됩니다.</string>
-    <string name="sign_up_email_hint">wery7942@mail.com</string>
+    <string name="sign_up_email_hint">stampic@mail.com</string>
     <string name="sign_up_email_error">올바른 형태의 이메일 주소를 입력해 주세요.</string>
     <string name="sign_up_email_dialog_error">이미 가입된 이메일 입니다.</string>
 
@@ -70,8 +70,19 @@
     <string name="sign_up_password_max_count">/12</string>
 
     <!-- FragmentSignUpBirth -->
-    <string name="sign_up_birth_error">영문 대 소문자, 숫자, 특수문자만 사용할 수 있어요.</string>
+    <string name="sign_up_birth_error">올바른 생년월일을 입력해주세요(ex: 19990101).</string>
     <string name="sign_up_birth_length_error">생년월일은 8자리로 입력해주세요.</string>
+
+    <!-- FragmentSignUpGender -->
+    <string name="sign_up_gender_title">성별을 선택해주세요</string>
+    <string name="sign_up_gender_female">여자</string>
+    <string name="sign_up_gender_male">남자</string>
+    <string name="sign_up_gender_error">성별을 선택해주세요.</string>
+
+    <!-- FragmentSignUpProvince -->
+    <string name="sign_up_province_title">어디에서 오셨나요?</string>
+    <string name="sign_up_province_hint">지역을 선택해주세요!</string>
+    <string name="sign_up_province_error">지역을 선택해주셔야 합니다.</string>
 
     <!-- FragmentSignUpNickname -->
     <string name="sign_up_nickname_title_top">에서 사용할</string>
