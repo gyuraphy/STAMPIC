@@ -30,7 +30,7 @@
         android:id="@+id/signUpProvinceFragment"
         android:name="com.googleplay.stampic.presentation.ui.sign.view.SignUpProvinceFragment"
         android:label="SignUpProvinceFragment"
-        tools:layout="@layout/fragment_sign_up_name">
+        tools:layout="@layout/fragment_sign_up_province">
         <action
             android:id="@+id/action_signUpProvinceFragment_to_signUpEmailFragment"
             app:destination="@id/signUpEmailFragment" />

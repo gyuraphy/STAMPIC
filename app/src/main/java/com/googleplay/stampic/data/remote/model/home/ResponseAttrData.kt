@@ -11,8 +11,14 @@ data class ResponseAttrData(
         data class AttrInfo (
             val id: Int,
             val place: String,
+            val title: String,
             val contents: String,
-            val thumb: String
+            val image: String,
+            val thumb: String,
+            val addr: String,
+            val gugunNm: String,
+            val lat: Float,
+            val lng: Float
         )
     }
 }

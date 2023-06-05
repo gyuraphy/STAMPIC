@@ -13,15 +13,16 @@
         android:paddingHorizontal="16dp"
         android:paddingVertical="20dp">
 
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/layout_attr_image"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:foreground="@drawable/shape_radius_16_gray200"
             android:gravity="center"
             android:padding="1dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <ImageView
                 android:id="@+id/iv_attr_image"
@@ -29,8 +30,19 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/shape_radius_16_gray200"
                 android:scaleType="fitXY"
-                android:src="@drawable/img_no_group" />
-        </LinearLayout>
+                android:src="@drawable/img_no_group"
+                android:foreground="@null"/>
+
+            <ImageView
+                android:id="@+id/iv_hidden"
+                android:padding="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_radius_16_gray200"
+                android:scaleType="fitXY"
+                android:src="@drawable/stamp_complete"
+                android:visibility="gone"/>
+        </FrameLayout>
 
         <TextView
             android:id="@+id/tv_attr_name"

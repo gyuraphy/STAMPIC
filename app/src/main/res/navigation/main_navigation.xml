@@ -17,11 +17,11 @@
         android:label="MyPageFragment"
         tools:layout="@layout/fragment_my_page" />
 
-    <fragment
-        android:id="@+id/mapFragment"
-        android:name="com.googleplay.stampic.presentation.ui.map.MapFragment"
-        android:label="MapFragment"
-        tools:layout="@layout/fragment_map" />
+<!--    <fragment-->
+<!--        android:id="@+id/mapFragment"-->
+<!--        android:name="com.googleplay.stampic.presentation.ui.map.MapFragment"-->
+<!--        android:label="MapFragment"-->
+<!--        tools:layout="@layout/fragment_map" />-->
 
 
 </navigation>

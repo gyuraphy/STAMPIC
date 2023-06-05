@@ -85,9 +85,9 @@ object ApiModule {
 //        return retrofit.create(MapService::class.java)
 //    }
 //
-//    @Provides
-//    @Singleton
-//    fun provideMyPageService(retrofit: Retrofit): MyPageService {
-//        return retrofit.create(MyPageService::class.java)
-//    }
+    @Provides
+    @Singleton
+    fun provideMyPageService(retrofit: Retrofit): MyPageService {
+        return retrofit.create(MyPageService::class.java)
+    }
 }

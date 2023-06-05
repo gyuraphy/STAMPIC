@@ -88,9 +88,9 @@ object DataSourceModule {
 //        return MapDataSourceImpl(mapService)
 //    }
 
-//    @Provides
-//    @Singleton
-//    fun provideMyPageDataSource(myPageService: MyPageService): MyPageDataSource {
-//        return MyPageDataSourceImpl(myPageService)
-//    }
+    @Provides
+    @Singleton
+    fun provideMyPageDataSource(myPageService: MyPageService): MyPageDataSource {
+        return MyPageDataSourceImpl(myPageService)
+    }
 }

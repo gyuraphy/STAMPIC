@@ -320,6 +320,7 @@
     <string name="mypage_notice">공지사항</string>
     <string name="mypage_bookmark_hit">조회</string>
     <string name="mypage_bookmark_comment">댓글</string>
+    <string name="mypage_spinner_hint">지역을 선택해주세요</string>
 
     <!-- MyPageActivity -->
     <string name="mypage_mission_title">완료한 미션</string>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#80000000" /> <!-- 검은색 투명 레이어의 색상 설정 -->
+</shape>

@@ -1,15 +1,219 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.googleplay.stampic.presentation.ui.mypage.view.MyPageFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+        <variable
+            name="vm"
+            type="com.googleplay.stampic.presentation.ui.mypage.viewmodel.MyPageViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="마이페이지화면"
-        android:textSize="30sp" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            style="@style/TextView.Title.16.Sb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mypage_title"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_configuration"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_configuration" />
+
+        <ImageView
+            android:id="@+id/iv_configuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_configuration"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/view_line_one"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/gray100"
+            app:layout_constraintTop_toBottomOf="@id/iv_configuration" />
+
+        <!-- primary -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/primary"
+            android:layout_width="380dp"
+            android:layout_height="248dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/primary"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_line_one">
+
+            <LinearLayout
+                android:id="@+id/layout_my_image"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/shape_oval_gray100"
+                android:gravity="center"
+                android:padding="1dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                >
+
+                <ImageView
+                    android:id="@+id/iv_my_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_oval_gray100"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/img_no_group" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_my_name"
+                style="@style/TextView.Title.16.Sb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@id/layout_my_image"
+                app:layout_constraintStart_toEndOf="@id/layout_my_image"
+                app:layout_constraintTop_toTopOf="@id/layout_my_image"
+                tools:text="스탬픽하입보이" />
+
+            <TextView
+                android:id="@+id/tv_stamp"
+                style="@style/TextView.Body.12.R"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="수집한 스탬프 갯수: "
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="25dp"
+                app:layout_constraintStart_toEndOf="@id/layout_my_image"
+                app:layout_constraintTop_toTopOf="@id/tv_my_name"/>
+
+            <TextView
+                android:id="@+id/tv_stamp_count"
+                style="@style/TextView.Caption.12.R"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="25dp"
+                app:layout_constraintStart_toEndOf="@id/tv_stamp"
+                app:layout_constraintTop_toTopOf="@id/tv_my_name"
+                android:text="@{vm.stampCount.toString()}"
+                tools:text="N" />
+
+            <!-- iv_line1 -->
+            <ImageView
+                android:id="@+id/iv_line_1"
+                android:layout_marginTop="24dp"
+                android:layout_marginStart="7dp"
+                android:layout_marginEnd="7dp"
+                android:background="@drawable/dotted_line"
+                app:layout_constraintTop_toBottomOf="@id/layout_my_image"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_height="1dp"
+                android:layout_width="match_parent"/>
+
+            <ImageView
+                android:id="@+id/iv_barcode"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:background="@drawable/barcode_two"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_line_1" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_barcode"
+                android:gravity="center"
+                android:textScaleX="1.0"
+                android:text="B  U  S  A  N    S  T  A  M  P    T  O  U  R"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/view_line_two"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/gray100"
+            app:layout_constraintTop_toBottomOf="@id/primary" />
+
+        <LinearLayout
+            android:id="@+id/secondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/view_line_two"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Spinner
+                android:id="@+id/sp_province"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/selector_et_sign_up"
+                android:entries="@array/gugun_nm_list"
+                android:prompt="@string/mypage_spinner_hint"
+                android:spinnerMode="dropdown"
+                android:textColor="@color/main_color"
+                android:textColorHint="@color/gray500"/>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view_line_three"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/gray100"
+            app:layout_constraintTop_toBottomOf="@id/secondary" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintTop_toBottomOf="@+id/view_line_three"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <include
+                android:id="@+id/activity_group"
+                android:layout_marginTop="10dp"
+                layout="@layout/activity_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

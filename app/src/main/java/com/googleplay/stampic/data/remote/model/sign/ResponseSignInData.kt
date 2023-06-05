@@ -8,11 +8,10 @@ data class ResponseSignInData(
     data class ResultSignIn(
         val id: Int,
         val email: String,
-        val name: String,
         val nickName: String,
-        val phoneNumber: String,
+        val province: String,
+        val profileImageUrl: String,
         val birth: String,
-        val gender: String,
-        val atk: String
+        val accessToken: String,
     )
 }
