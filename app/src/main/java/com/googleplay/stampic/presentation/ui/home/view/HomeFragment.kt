@@ -1,44 +1,50 @@
 package com.googleplay.stampic.presentation.ui.home.view
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
-import android.view.View
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.googleplay.stampic.domain.model.DialogInfo
-import com.googleplay.stampic.presentation.ui.base.BaseFragment
-import com.googleplay.stampic.presentation.util.DialogFragmentUtil
+import com.google.android.gms.common.api.GoogleApi
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.Granularity
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.googleplay.stampic.R
 import com.googleplay.stampic.databinding.FragmentHomeBinding
+import com.googleplay.stampic.domain.model.DialogInfo
+import com.googleplay.stampic.presentation.ui.base.BaseFragment
+import com.googleplay.stampic.presentation.ui.detail.view.DetailActivity
+import com.googleplay.stampic.presentation.ui.home.adapter.HomeListRecyclerViewAdapter
+import com.googleplay.stampic.presentation.ui.home.viewmodel.HomeViewModel
+import com.googleplay.stampic.presentation.util.DialogFragmentUtil
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 import java.io.InputStream
 import java.nio.charset.StandardCharsets
-import com.googleplay.stampic.R
-import com.googleplay.stampic.presentation.ui.detail.view.DetailActivity
-import com.googleplay.stampic.presentation.ui.home.adapter.HomeListRecyclerViewAdapter
-import com.googleplay.stampic.presentation.ui.home.viewmodel.HomeViewModel
+import kotlin.math.*
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home), OnMapReadyCallback {
@@ -46,10 +52,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home), 
 
     private lateinit var homeListViewAdapter: HomeListRecyclerViewAdapter
     private lateinit var mContext: Context
-    private lateinit var googleMap:GoogleMap
-
+    private lateinit var googleMap: GoogleMap
+    private lateinit var googleApiClient: GoogleApiClient
     private val homeViewModel: HomeViewModel by viewModels()
-    private val DESIRED_ZOOM_LEVEL = 10f
+    private var previousZoomLevel = 10f
+
+    //private val DESIRED_ZOOM_LEVEL = 9f
     private val markerList: MutableList<Marker> = mutableListOf()
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -67,7 +75,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home), 
     }
 
     override fun initStartView() {
-        Log.d("dd","initStartView 실행")
+        Log.d("dd", "initStartView 실행")
         binding.vm = homeViewModel
 
         homeListViewAdapter =
@@ -86,7 +94,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home), 
 
         homeListViewAdapter.apply {
             homeViewModel.getAttrList()
-            Log.d("dd","getAttrList() 실행")
+            Log.d("dd", "getAttrList() 실행")
         }
 
         locationPermissionRequest.launch(
@@ -109,7 +117,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home), 
 
     // 데이터 바인딩 이후에 수행되는 초기화 작업
     override fun initAfterBinding() {
+
         Log.d("dd", "initAfterBinding 실행")
+
         val searchView: SearchView = binding.searchView
         val imageView: ImageView = binding.homeToolImg
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -131,7 +141,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home), 
             }
         })
 
-        // SearchView의 포커스 변화 리스너 설정
+
         searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 // SearchView에 포커스가 있는 경우, ImageView를 숨김
@@ -158,7 +168,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home), 
             startActivity(intent)
         }
 
-        val recyclerView = binding.activityGroup.rvHome
         val bottomNavigationView =
             requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigation)
         bottomNavigationView.setOnItemReselectedListener { menuItem ->
@@ -175,25 +184,98 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home), 
 
         }
 
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
+        // FusedLocationProviderClient 객체 생성
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext)
 
-                val visibleItemCount = recyclerView.layoutManager?.childCount ?: 0
-                val totalItemCount = recyclerView.layoutManager?.itemCount ?: 0
-                val firstVisibleItemPosition =
-                    (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+        // 위치 업데이트 요청
+        val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000).apply {
+            setMinUpdateDistanceMeters(1F)
+            setGranularity(Granularity.GRANULARITY_PERMISSION_LEVEL)
+            setWaitForAccurateLocation(true)
+        }.build()
 
-                if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount) {
-                    // 리스트뷰의 끝에 도달한 경우
-                    bottomNavigationView.visibility = View.GONE
-                } else {
-                    bottomNavigationView.visibility = View.VISIBLE
+        val locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                val latestLocation = locationResult.lastLocation
+                // 최신 위치 정보를 사용하여 필요한 작업 수행
+                val currentLat = latestLocation?.latitude
+                val currentLng = latestLocation?.longitude
+                Log.d("dd","나의 현재 위도:"+currentLat)
+                Log.d("dd","나의 현재 경도:"+currentLng)
+                val attrList = homeViewModel.attrList.value
+                if (!attrList.isNullOrEmpty()) {
+                    for (attrInfo in attrList) {
+                        val targetLat = attrInfo.lat.toDouble()
+                        val targetLng = attrInfo.lng.toDouble()
+
+                        // 현재 위치와의 거리 계산
+//                        val distance = getDistance(currentLat, currentLng, targetLat, targetLng)
+
+                        // 15m 반경 안에 접근할 경우 데이터베이스에 삽입
+//                        if (distance <= 15) {
+//                            // stamp 테이블에 데이터 삽입하는 로직 작성
+//                            // ...
+//                        }
+                    }
                 }
             }
-        })
+        }
 
+        // 위치 권한 확인
+        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location ->
+                    if (location != null) {
+                        val currentLat = location.latitude
+                        val currentLng = location.longitude
+                        // 위치 정보를 사용하여 필요한 작업 수행
+                        Log.d("dd","나의 현재 위도:"+currentLat)
+                        Log.d("dd","나의 현재 경도:"+currentLng)
+                        val attrList = homeViewModel.attrList.value
+                        if (attrList != null) {
+                            Log.d("dd", "attrList는 가져와졌을까?"+attrList.size)
+                        }
+                        if (!attrList.isNullOrEmpty()) {
+                            for (attrInfo in attrList) {
+                                val targetLat = attrInfo.lat.toDouble()
+                                val targetLng = attrInfo.lng.toDouble()
+
+                                // 현재 위치와의 거리 계산
+                                val distance = getDistance(currentLat, currentLng, targetLat, targetLng)
+
+                                // 15m 반경 안에 접근할 경우 데이터베이스에 삽입
+                                if (distance <= 15) {
+                                    // stamp 테이블에 데이터 삽입하는 로직 작성
+                                    // ...
+                                }
+                            }
+                        }
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    // 위치 정보를 가져오는 도중에 오류가 발생한 경우 처리
+                }
+            // 위치 업데이트 요청
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
+        }
     }
+
+    // 거리 계산
+    private fun getDistance(lat1: Double, lng1: Double, lat2: Double, lng2: Double): Double {
+        val R = 6371 // 지구의 반지름 (단위: km)
+
+        val latDistance = Math.toRadians(lat2 - lat1)
+        val lonDistance = Math.toRadians(lng2 - lng1)
+
+        val a = sin(latDistance / 2) * sin(latDistance / 2) +
+                cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2)) *
+                sin(lonDistance / 2) * sin(lonDistance / 2)
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+        return R * c * 1000 // 거리 반환 (단위: m)
+    }
+
 
     // 권한 거부 했을때
     private fun permissionDialog() {
@@ -234,7 +316,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home), 
     private val sggNmList = mutableListOf<String>()
     private val polygonList = mutableListOf<Polygon>() // 폴리곤 리스트 추가
 
-    private var clickedPolygon: Polygon? = null
     private var previousClickedSggNm: String? = null
     private var previousClickedPolygon: Polygon? = null
 
@@ -244,14 +325,36 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home), 
         "해운대구", "북구", "기장군", "사상구", "수영구"
     )
 
+    private fun loadJSONFromAsset(): String? {
+        return try {
+            val inputStream: InputStream = resources.openRawResource(R.raw.simplebusan)
+            val size: Int = inputStream.available()
+            val buffer = ByteArray(size)
+            inputStream.read(buffer)
+            inputStream.close()
+            String(buffer, StandardCharsets.UTF_8)
+        } catch (ex: IOException) {
+            ex.printStackTrace()
+            null
+        }
+
+    }
+
     override fun onMapReady(googleMap: GoogleMap) {
         this.googleMap = googleMap
 
         // 시작위치 부산
         val busanLatLng = LatLng(35.1796, 129.0750)
+
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(busanLatLng, 10f))
 
         googleMap.uiSettings.isZoomControlsEnabled = true
+
+        // 선택된 폴리곤의 색상 (파란색과 50%의 투명도)
+        val selectedFillColor = Color.argb(128, 0, 79, 128)
+
+        // 선택되지 않은 폴리곤의 색상 (투명한 색)
+        val unselectedFillColor = Color.argb(51, 0,79, 128)
 
         // JSON file , simplebusan.json
         val jsonStr = loadJSONFromAsset()
@@ -271,6 +374,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home), 
                     if (type == "Polygon") {
 
                         val polygonOptions = drawPolygon(coordinates)
+                        polygonOptions.fillColor(unselectedFillColor)
                         googleMap.addPolygon(polygonOptions)
                         val polygon = googleMap.addPolygon(polygonOptions)
                         polygon.tag = i // Set the index as a tag to retrieve SGG_NM later
@@ -281,6 +385,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home), 
                         for (j in 0 until coordinates.length()) {
                             val polygonCoordinates = coordinates.getJSONArray(j)
                             val polygonOptions = drawPolygon(polygonCoordinates)
+                            polygonOptions.fillColor(unselectedFillColor)
                             val polygon = googleMap.addPolygon(polygonOptions)
                             polygon.tag = i // Set the index as a tag to retrieve SGG_NM later
                             polygonList.add(polygon)
@@ -295,165 +400,119 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home), 
         // 폴리곤 선택 시 -> 색, 확대, 리스트
         googleMap.setOnPolygonClickListener { polygon ->
 
-            // 폴리곤 색 변경
-            clickedPolygon?.fillColor = Color.TRANSPARENT
-            clickedPolygon = null
 
-            // 선택된 폴리곤의 구군 가져오기
-            val index  = polygon.tag as? Int
-            val sggNm = sggNmList.getOrNull(index ?: -1)
-            Log.d("dd",sggNm.toString())
+            // 현재 선택한 폴리곤과 이전에 선택한 폴리곤이 같은 경우
+            if (previousClickedPolygon == polygon) {
+                var recyclerView = binding.activityGroup.rvHome
 
-            if (sggNm != null && desiredSggNmList.contains(sggNm)) {
-                if (previousClickedPolygon  != null && previousClickedPolygon != polygon) {
-                    // 이전에 선택한 폴리곤 색 초기화
-                    previousClickedPolygon?.fillColor = Color.TRANSPARENT
-                    // 이전에 선택한 폴리곤의 마커 제거
-                    removeMarkers()
-                }
+                // 폴리곤 선택 x -> 전체 명소 리스트 가져오기
+                homeListViewAdapter.submitList(homeViewModel.attrList.value)
 
-                // 구군에따른 폴리곤 색 변경
-                val fillColor = Color.RED
-                polygon.fillColor = fillColor
+                // 이전에 선택한 폴리곤의 색상 초기화
+                previousClickedPolygon?.fillColor = unselectedFillColor
+
+                // 선택한 폴리곤 초기화
+                previousClickedPolygon = null
+                previousClickedSggNm = null
+
+                Log.d("dd", "지도 초기화")
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(busanLatLng, 10f))
+
+                //리스트 제일 위로
+//                recyclerView.smoothScrollToPosition(0)
+
+                removeMarkers()
+
+            } else {
+
+                // 이전에 선택한 폴리곤의 색상 초기화
+                previousClickedPolygon?.fillColor = unselectedFillColor
+
+                // 선택한 폴리곤의 색상 변경
+                polygon.fillColor = selectedFillColor
 
                 // 선택한 폴리곤을 저장하여 이후에 초기화 또는 비교에 사용
                 previousClickedPolygon = polygon
 
-                clickedPolygon = polygon
+                // 선택된 폴리곤의 구군 가져오기
+                val index = polygon.tag as? Int
+                val sggNm = sggNmList.getOrNull(index ?: -1)
+                Log.d("dd", sggNm.toString())
                 previousClickedSggNm = sggNm
 
-                // 클릭한 다각형의 좌표 가져오기
-                val points = polygon.points.toList()
 
-                // 좌표로부터 경계 계산
-                val builder = LatLngBounds.builder()
-                for (point in points) {
-                    builder.include(point)
+                // sggNm이 null x, 구군네임 안에 포함되어있다면
+                if (sggNm != null && desiredSggNmList.contains(sggNm)) {
+
+                    val points = polygon.points.toList()
+                    val builder = LatLngBounds.builder()
+                    for (point in points) {
+                        builder.include(point)
+                    }
+                    val bounds = builder.build()
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10))
+
+                    // attrList에서 gugunNm이 sggNm과 일치하는 리스트 필터링
+                    val filteredList =
+                        homeViewModel.attrList.value?.filter { it.gugunNm == sggNm }
+                    Log.d("dd", "submitList 실행")
+
+                    // 필터링 한 리스트 띄우기
+                    homeListViewAdapter.submitList(filteredList)
+
+                } else {
+
+                    // 폴리곤 선택 x -> 전체 명소 리스트 가져오기
+                    homeListViewAdapter.submitList(homeViewModel.attrList.value)
                 }
-                val bounds = builder.build()
 
-                // 지도 확대
-                val padding = 200 // 확대하는 정도
-                val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding)
-                googleMap.animateCamera(cameraUpdate, object : GoogleMap.CancelableCallback {
+                // 지도 클릭 시
+                googleMap.setOnMapClickListener { point ->
 
-                    override fun onFinish() {
+                    var recyclerView = binding.activityGroup.rvHome
 
-                        // 카메라 위치 이동
-                        val newCameraPosition = CameraPosition.builder()
-                            .target(polygon.points[0]) // 폴리곤의 첫 번째 좌표를 타겟으로 설정
-                            .zoom(googleMap.cameraPosition.zoom) // 현재 줌 레벨 유지
-                            .build()
-                        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(newCameraPosition))
+                    // 이전에 선택한 폴리곤의 색상 초기화
+                    previousClickedPolygon?.fillColor = unselectedFillColor
 
-                        // attrList에서 gugunNm이 sggNm과 일치하는 항목 필터링
-                        val filteredList =
-                            homeViewModel.attrList.value?.filter { it.gugunNm == sggNm }
-                        Log.d("dd", "submitList 실행")
-                        homeListViewAdapter.submitList(filteredList)
-                        //Log.d("dd", "filteredList -> " + filteredList)
-
-                    }
-                    override fun onCancel() {
-                        // 카메라 이동이 취소된 경우의 처리
-                    }
-                })
-            } else {
-                if (previousClickedPolygon  != null) {
-                    // 이전에 선택한 폴리곤 색 초기화
-                    previousClickedPolygon?.fillColor = Color.TRANSPARENT
-                    // 이전에 선택한 폴리곤의 마커 제거
-                    removeMarkers()
+                    // 선택한 폴리곤 초기화
                     previousClickedPolygon = null
-                    Log.d("dd","초기화 실행")
+                    previousClickedSggNm = null
+
+                    // 폴리곤 선택 x -> 전체 명소 리스트 가져오기
+                    homeListViewAdapter.submitList(homeViewModel.attrList.value)
+
+                    Log.d("dd", "지도 초기화")
                     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(busanLatLng, 10f))
+
+                    //리스트 제일 위로
+//                    recyclerView.smoothScrollToPosition(0)
+
+                    removeMarkers()
                 }
 
-                // 폴리곤 선택 x -> 전체 attrList 가져오기
-                homeListViewAdapter.submitList(homeViewModel.attrList.value)
+                // 구글맵 카메라 이벤트 리스너 등록
+                // 확대 시 마커 추가
+                googleMap.setOnCameraIdleListener {
 
-            }
+                    val zoomLevel = googleMap.cameraPosition.zoom
 
-        }
+                    // 이전의 줌 레벨과 현재 줌 레벨을 비교하여 확대/축소 여부 확인
+                    if (zoomLevel > previousZoomLevel) {
+                        // 확대된 경우에는 마커 추가
+                        addMarkersFromFilteredList()
+                    } else {
+                        // 축소된 경우에는 기존의 마커 제거
+                        removeMarkers()
+                    }
+                    // 현재 줌 레벨을 이전 줌 레벨로 업데이트
+                    previousZoomLevel = zoomLevel
 
-        // 구글맵 카메라 이벤트 리스너 등록
-        googleMap.setOnCameraIdleListener {
-            val zoomLevel = googleMap.cameraPosition.zoom
-
-            // 확대된 경우에만 마커 추가
-            if (zoomLevel > DESIRED_ZOOM_LEVEL) {
-                addMarkersFromFilteredList()
-            } else {
-                // 확대되지 않은 경우에는 기존의 마커 제거
-                removeMarkers()
-            }
-
-        }
-    }
-
-    // 마커 추가 함수
-    private fun addMarkersFromFilteredList() {
-        // 이전에 추가된 마커 제거
-        removeMarkers()
-
-        val filteredList = homeViewModel.attrList.value // filteredList 변수 추가
-
-        // 선택한 폴리곤의 SGG_NM 가져오기
-        val selectedSggNm = previousClickedPolygon?.tag as? String
-
-        for (item in filteredList.orEmpty()) {
-            val lat = item.lat
-            val lng = item.lng
-            val sggNm = item.gugunNm
-
-            if (selectedSggNm == sggNm) {
-                val markerOptions = MarkerOptions()
-                    .position(LatLng(lat.toDouble(), lng.toDouble()))
-                    .title(item.place)
-
-                val marker = googleMap.addMarker(markerOptions)
-                marker?.let {
-                    markerList.add(it)
-                    //Log.d("dd", "markerList" + markerList)
                 }
             }
         }
     }
 
-    // 마커 초기화
-    private fun removeMarkers() {
-        for (marker in markerList) {
-            marker.remove()
-        }
-        markerList.clear()
-    }
-
-    // 다른 폴리곤 선택 후 색 변경
-    private fun clearPolygonColor(sggNm: String) {
-        val previousPolygon = polygonList.firstOrNull { polygon ->
-            val index = polygon.tag as? Int
-            val polygonSggNm = sggNmList.getOrNull(index ?: -1)
-            polygonSggNm == sggNm
-        }
-
-        previousPolygon?.fillColor = Color.TRANSPARENT
-    }
-
-    private fun loadJSONFromAsset(): String? {
-        return try {
-            val inputStream: InputStream = resources.openRawResource(R.raw.simplebusan)
-            val size: Int = inputStream.available()
-            val buffer = ByteArray(size)
-            inputStream.read(buffer)
-            inputStream.close()
-            String(buffer, StandardCharsets.UTF_8)
-        } catch (ex: IOException) {
-            ex.printStackTrace()
-            null
-        }
-
-    }
-
+    //폴리곤 그리기
     private fun drawPolygon(coordinates: JSONArray): PolygonOptions {
         val polygonPoints = mutableListOf<LatLng>()
         for (i in 0 until coordinates.length()) {
@@ -474,10 +533,49 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home), 
         }
 
         val polygonOptions = PolygonOptions()
+            .strokeWidth(5f)
             .addAll(polygonPoints)
             .clickable(true)
 
         return polygonOptions
+    }
+
+    private fun addMarkersFromFilteredList() {
+        // 이전에 추가된 마커 제거
+        removeMarkers()
+
+        // filteredList -> 필터링 된 명소 리스트
+        val filteredList = homeViewModel.attrList.value
+
+        // 선택한 폴리곤의 SGG_NM 가져오기
+        val selectedSggNm = previousClickedSggNm
+
+        for (item in filteredList.orEmpty()) {
+            val lat = item.lat
+            val lng = item.lng
+            val sggNm = item.gugunNm
+
+            // 필터링된 리스트 내의 구군네임과 선택한 구군네임이 일치하는 경우에만 마커 추가
+            if (selectedSggNm == sggNm) {
+                val markerOptions = MarkerOptions()
+                    .position(LatLng(lat.toDouble(), lng.toDouble()))
+                    .title(item.place)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.stamp_menu))
+
+                val marker = googleMap.addMarker(markerOptions)
+                marker?.let {
+                    markerList.add(it)
+                }
+            }
+        }
+    }
+
+    // 마커 초기화
+    private fun removeMarkers() {
+        for (marker in markerList) {
+            marker.remove()
+        }
+        markerList.clear()
     }
 
 }

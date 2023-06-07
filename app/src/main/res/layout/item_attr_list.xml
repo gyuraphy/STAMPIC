@@ -20,9 +20,10 @@
             android:foreground="@drawable/shape_radius_16_gray200"
             android:gravity="center"
             android:padding="1dp"
+            android:paddingBottom="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintBottom_toBottomOf="@id/item_line">
 
             <ImageView
                 android:id="@+id/iv_attr_image"
@@ -30,8 +31,7 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/shape_radius_16_gray200"
                 android:scaleType="fitXY"
-                android:src="@drawable/img_no_group"
-                android:foreground="@null"/>
+                android:src="@drawable/img_no_group"/>
 
             <ImageView
                 android:id="@+id/iv_hidden"
@@ -67,11 +67,22 @@
             android:ems="13"
             android:maxLines="3"
             android:textColor="@color/gray700"
+            android:paddingBottom="20dp"
             app:layout_constraintBottom_toBottomOf="@id/layout_attr_image"
             app:layout_constraintStart_toEndOf="@id/layout_attr_image"
             app:layout_constraintTop_toBottomOf="@id/tv_attr_name"
             tools:text="명소 소개글은 소개글은 소개글은 소개글은 소개글은명소 소개글은 소개글은 소개글은 소개글은 소개글은 명소 소개글은 소개글은 소개글은 소개글은 소개글은 명소 소개글은 소개글은 소개글은 소개글은 소개글은" />
 
+        <View
+            android:id="@+id/item_line"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/gray300"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
 
         <androidx.constraintlayout.helper.widget.Layer
             android:id="@+id/layer"

@@ -12,37 +12,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_home_top"
-            android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-
-            <ImageView
-                android:layout_width="160dp"
-                android:layout_height="40dp"
-                android:src="@drawable/stamp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/tool_back"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/tool_back"
-                app:title=" "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:navigationIcon="@drawable/ic_back"
-                app:layout_constraintBottom_toBottomOf="parent"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_home_top"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ImageView
+                    android:layout_width="160dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/stamp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/tool_back"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/tool_back"
+                    app:title=" "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:navigationIcon="@drawable/ic_back"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:id="@+id/detail_image_layout"
@@ -72,11 +71,21 @@
                 android:textColor="@color/black"
                 android:textSize="32sp"
                 android:fontFamily="@font/pretendard_regular"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:paddingTop="40dp"
                 android:paddingBottom="40dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/detail_image_layout" />
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/gray200"
+                app:layout_constraintBottom_toBottomOf="@+id/title_text" />
 
             <TextView
                 android:id="@+id/contents_text"
@@ -85,16 +94,29 @@
                 android:text="contents"
                 android:textColor="@color/black"
                 android:textSize="25sp"
+                android:paddingTop="10dp"
+                android:paddingBottom="15dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:fontFamily="@font/pretendard_regular"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title_text" />
 
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/gray200"
+                app:layout_constraintBottom_toBottomOf="@+id/contents_text" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/map_view"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:paddingBottom="16dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/contents_text">
@@ -107,9 +129,15 @@
                     android:paddingBottom="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/map_view"/>
-
+                    app:layout_constraintTop_toTopOf="@id/map_view" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/gray200"
+                app:layout_constraintBottom_toBottomOf="@+id/map_view" />
 
             <TextView
                 android:id="@+id/addr_text"

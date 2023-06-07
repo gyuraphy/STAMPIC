@@ -1,10 +1,15 @@
 package com.googleplay.stampic.presentation.ui.home.view
 
+import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.gms.location.LocationServices
 import com.googleplay.stampic.R
 import com.googleplay.stampic.databinding.ActivityMainBinding
 import com.googleplay.stampic.presentation.ui.base.BaseActivity

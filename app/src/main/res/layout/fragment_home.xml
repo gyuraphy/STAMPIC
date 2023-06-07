@@ -32,6 +32,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
+
                 <ImageView
                     android:id="@+id/home_tool_img"
                     android:layout_width="160dp"
@@ -82,13 +83,22 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <View
+                android:id="@+id/view_line_one"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray100"
+                app:layout_constraintTop_toBottomOf="@id/map_top" />
+
             <include
                 android:id="@+id/activity_group"
                 layout="@layout/activity_group"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/map_top"
-                app:layout_constraintEnd_toStartOf="parent"/>
+                android:layout_height="360dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_line_one"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
